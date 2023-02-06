@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const kAddressTextstyle = TextStyle(
+const kAddressTextStyle = TextStyle(
     color: Colors.white,
     fontWeight: FontWeight.bold,
     fontFamily: 'SourceSansPro',

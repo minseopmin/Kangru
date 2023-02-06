@@ -62,11 +62,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Kangru',
         theme: ThemeData(primarySwatch: Colors.orange),
-        home: Mypage());
+        home: const Mypage());
   }
 }
 
 class Mypage extends StatelessWidget {
+  const Mypage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final String address = kangruData.address[0];
@@ -87,8 +89,8 @@ class Mypage extends StatelessWidget {
               mainAxisSpacing: 10, // 수평패딩
               crossAxisSpacing: 10), // 수직패딩
           itemBuilder: (BuildContext context, int index) {
-            return Cardkangru(
-                imageurl: cardList!.list!.elementAt(index).image!,
+            return CardKangru(
+                imageUrl: cardList!.list!.elementAt(index).image!,
                 businessName:
                     '${index + 1}.${cardList!.list!.elementAt(index).name!}',
                 score: cardList!.list!.elementAt(index).score!);
