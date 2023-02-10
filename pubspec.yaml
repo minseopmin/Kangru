@@ -14,8 +14,11 @@ dependencies:
     sdk: flutter
   sticky_headers: "^0.1.8"
   json_annotation: ^4.8.0
-
   cupertino_icons: ^1.0.2
+  geolocator: ^9.0.2
+  get: ^4.6.5
+  http: ^0.13.5
+  flutter_spinkit: ^5.1.0
 
 dev_dependencies:
   build_runner: ^2.3.3

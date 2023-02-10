@@ -65,7 +65,7 @@ class AppBarKangru extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(appBar.preferredSize.height);
 }
 
-Drawer DrawerKangru() {
+Drawer drawerKangru() {
   return Drawer(
       child: ListView(padding: EdgeInsets.zero, children: <Widget>[
     const DrawerHeader(
