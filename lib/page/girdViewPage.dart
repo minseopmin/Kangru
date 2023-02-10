@@ -46,9 +46,17 @@ final cardItem = {
 CardList? cardList;
 KangruData kangruData = KangruData();
 
-class GridViewPage extends StatelessWidget {
-  const GridViewPage({super.key});
+class GridViewPage extends StatefulWidget {
+  const GridViewPage({super.key, required this.long, required this.lati});
 
+  final double? long;
+  final double? lati;
+
+  @override
+  _GridViewPage createState() => _GridViewPage();
+}
+
+class _GridViewPage extends State<GridViewPage> {
   @override
   Widget build(BuildContext context) {
     final String address = kangruData.address[0];
