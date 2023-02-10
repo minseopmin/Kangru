@@ -15,30 +15,30 @@ final cardItem = {
     {
       "image":
           "https://live.staticflickr.com/7364/12693021913_468f3bbc1c_b.jpg",
-      "name": "신세계 떡볶이",
+      "name": "명화당",
       "score": 4.2,
     },
     {
       "image": "https://live.staticflickr.com/506/19718391335_b9bc4dfda5_b.jpg",
-      "name": "신세계 떡볶이",
+      "name": "딸깍발이",
       "score": 4.0,
     },
     {
       "image":
           "https://img.siksinhot.com/place/1621306337133097.jpeg?w=540&h=436&c=Y",
-      "name": "신세계 떡볶이",
+      "name": "남산 떡볶이",
       "score": 3.5,
     },
     {
       "image":
           "https://img.siksinhot.com/place/1621306337133097.jpeg?w=540&h=436&c=Y",
-      "name": "신세계 떡볶이",
-      "score": 3.0,
+      "name": "꽃사슴떡볶이",
+      "score": 3.2,
     },
     {
       "image":
           "https://img.siksinhot.com/place/1621306337133097.jpeg?w=540&h=436&c=Y",
-      "name": "신세계 떡볶이",
+      "name": "루비떡볶이",
       "score": 3.1,
     }
   ]
