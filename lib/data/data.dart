@@ -8,6 +8,6 @@ class KangruData {
     '02-9837-0493'
   ];
   List<double> gScore = [4, 4.5, 2.4, 3.0];
-  List<double> nscore = [4, 3, 5, 2, 4.5];
-  List<double> kscore = [3, 4, 2, 1, 5];
+  List<double> nScore = [4, 3, 5, 2, 4.5];
+  List<double> kScore = [3, 4, 2, 1, 5];
 }

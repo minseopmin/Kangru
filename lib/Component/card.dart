@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class Cardkangru extends StatelessWidget {
-  const Cardkangru({
+class CardKangru extends StatelessWidget {
+  const CardKangru({
     super.key,
-    required this.imageurl,
+    required this.imageUrl,
     required this.businessName,
     required this.score,
   });
 
-  final String imageurl;
+  final String imageUrl;
   final String businessName;
   final double score;
 
@@ -32,7 +32,7 @@ class Cardkangru extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
               child: Image.network(
-                imageurl,
+                imageUrl,
                 height: ((MediaQuery.of(context).size.width) - 42) /
                     2, //app화면 가로 - Padding /2
                 fit: BoxFit.fill,
