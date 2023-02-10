@@ -27,7 +27,7 @@ final cardItem = {
       "image":
           "https://img.siksinhot.com/place/1621306337133097.jpeg?w=540&h=436&c=Y",
       "name": "남산 떡볶이",
-      "score": 3.5,
+      "score": 3.6,
     },
     {
       "image":
