@@ -24,6 +24,9 @@ class Mypage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LoadingPage();
+    return MaterialApp(
+      theme: ThemeData.dark(),
+      home: LoadingPage(),
+    );
   }
 }
