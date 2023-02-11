@@ -11,7 +11,7 @@ class LoadingPage extends StatefulWidget {
 }
 
 class LoadingPageState extends State<LoadingPage> {
-  Future<Position> getLocation() async {
+  void getLocation() async {
     bool serviceEnabled;
     //await Geolocator.openAppSettings();
     //await Geolocator.openLocationSettings();
@@ -31,8 +31,9 @@ class LoadingPageState extends State<LoadingPage> {
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
-    return await Geolocator.getCurrentPosition(
+    Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
+    print(position);
   }
 
   @override
@@ -41,7 +42,7 @@ class LoadingPageState extends State<LoadingPage> {
       body: Center(
         child: TextButton(
             onPressed: () {
-              print('${getLocation()}test');
+              getLocation();
             },
             child: const Text('getlocation')
             // child: SpinKitDoubleBounce(
