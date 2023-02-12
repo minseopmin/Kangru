@@ -61,20 +61,10 @@ class LoadingPageState extends State<LoadingPage> {
     return const Scaffold(
       body: Center(
         child: SpinKitDoubleBounce(
-          color: Colors.white,
+          color: Colors.orange,
           size: 100,
         ),
       ),
     );
   }
 }
-
-// Navigator.push(
-// context,
-// MaterialPageRoute(
-// builder: (context) {
-// return GridViewPage(
-// long: position.longitude, lati: position.latitude);
-// },
-// ),
-// );

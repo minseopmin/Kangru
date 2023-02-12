@@ -13,6 +13,7 @@ class AppBarKangru extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.orange,
       elevation: 0.0,
       leadingWidth: 120,
       //TODO:leading width = the length of the text
