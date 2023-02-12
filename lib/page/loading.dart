@@ -11,7 +11,9 @@ class LoadingPage extends StatefulWidget {
 }
 
 class LoadingPageState extends State<LoadingPage> {
-  void getLocation() async {
+  void getLocation(BuildContext context) async {
+    Location location = Location();
+    await location.getCurrentLocation();
     bool serviceEnabled;
     //await Geolocator.openAppSettings();
     //await Geolocator.openLocationSettings();
@@ -30,26 +32,49 @@ class LoadingPageState extends State<LoadingPage> {
     if (permission == LocationPermission.deniedForever) {
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
+    } else {
+      try {
+        if (!mounted) return;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return GridViewPage(
+                  long: location.longitude, lati: location.latitude);
+            },
+          ),
+        );
+      } catch (e) {
+        print(e);
+      }
     }
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    print(position);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getLocation(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: TextButton(
-            onPressed: () {
-              getLocation();
-            },
-            child: const Text('getlocation')
-            // child: SpinKitDoubleBounce(
-            //   color: Colors.white,
-            //   size: 100,
-            ),
+        child: SpinKitDoubleBounce(
+          color: Colors.white,
+          size: 100,
+        ),
       ),
     );
   }
 }
+
+// Navigator.push(
+// context,
+// MaterialPageRoute(
+// builder: (context) {
+// return GridViewPage(
+// long: position.longitude, lati: position.latitude);
+// },
+// ),
+// );

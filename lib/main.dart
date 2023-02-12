@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kangru/page/girdViewPage.dart';
 import 'package:kangru/page/loading.dart';
 
 void main() {
@@ -25,8 +24,8 @@ class Mypage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(),
-      home: LoadingPage(),
+      theme: ThemeData(),
+      home: const LoadingPage(),
     );
   }
 }
