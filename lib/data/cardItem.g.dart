@@ -20,10 +20,14 @@ CardItem _$CardItemFromJson(Map<String, dynamic> json) => CardItem(
       image: json['image'] as String?,
       name: json['name'] as String?,
       score: json['score'] as double?,
+      longitude: json['longitude'] as double?,
+      latitude: json['latitude'] as double?,
     );
 
 Map<String, dynamic> _$CardItemToJson(CardItem instance) => <String, dynamic>{
       'image': instance.image,
       'name': instance.name,
       'score': instance.score,
+      'longitude': instance.longitude,
+      'latitude': instance.latitude,
     };

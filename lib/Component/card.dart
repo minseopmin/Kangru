@@ -6,11 +6,13 @@ class CardKangru extends StatelessWidget {
     required this.imageUrl,
     required this.businessName,
     required this.score,
+    required this.distance,
   });
 
   final String imageUrl;
   final String businessName;
   final double score;
+  final String distance;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,9 @@ class CardKangru extends StatelessWidget {
             ),
             Text(
               score.toString(),
+            ),
+            Text(
+              distance,
             )
           ],
         ),

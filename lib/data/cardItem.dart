@@ -21,11 +21,15 @@ class CardItem {
   String? image;
   String? name;
   double? score;
+  double? longitude;
+  double? latitude;
 
   CardItem({
     required this.image,
     required this.name,
     required this.score,
+    required this.longitude,
+    required this.latitude,
   });
 
   factory CardItem.fromJson(Map<String, dynamic> json) =>
