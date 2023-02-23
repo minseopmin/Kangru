@@ -1,34 +1,42 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'cardItem.g.dart';
+part '../data/cardItem.g.dart';
 
 @JsonSerializable()
-class CardList {
-  List<CardItem>? list;
+class StoreList {
+  List<Store>? list;
 
-  CardList({
+  StoreList({
     required this.list,
   });
 
-  factory CardList.fromJson(Map<String, dynamic> json) =>
+  factory StoreList.fromJson(Map<String, dynamic> json) =>
       _$CardListFromJson(json);
 
   Map<String, dynamic> toJson() => _$CardListToJson(this);
 }
 
 @JsonSerializable()
-class CardItem {
+class Store {
   String? image;
   String? name;
   double? score;
 
-  CardItem({
+  Store({
     required this.image,
     required this.name,
     required this.score,
   });
 
-  factory CardItem.fromJson(Map<String, dynamic> json) =>
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'gradeK': score,
+      'image': image,
+    };
+  }
+
+  factory Store.fromJson(Map<String, dynamic> json) =>
       _$CardItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$CardItemToJson(this);

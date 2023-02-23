@@ -1,10 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'data/data.dart';
 import 'Component/appbar.dart';
 import 'Component/card.dart';
-import 'data/cardItem.dart';
+import 'Model/store.dart';
 
-final cardItem = {
+
+
+final storeItem = {
   "list": [
     {
       "image":
@@ -45,7 +48,7 @@ final cardItem = {
 };
 //TODO server data
 
-CardList? cardList;
+StoreList? cardList;
 
 KangruData kangruData = KangruData();
 
@@ -72,7 +75,8 @@ class Mypage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String address = kangruData.address[0];
-    cardList = CardList.fromJson(cardItem);
+
+    cardList = StoreList.fromJson(storeItem);
 
     return Scaffold(
       drawer: DrawerKangru(),
