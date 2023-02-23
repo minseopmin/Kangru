@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kangru/page/loading.dart';
+import 'package:kangru/View/loading.dart';
 
 void main() {
   runApp(const MyApp());
