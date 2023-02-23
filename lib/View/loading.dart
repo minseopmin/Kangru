@@ -1,8 +1,8 @@
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:kangru/page/girdViewPage.dart';
-import '../data/Location.dart';
+import 'package:kangru/View/gridViewPage.dart';
+import '../Model/location.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
