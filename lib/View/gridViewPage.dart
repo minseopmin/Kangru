@@ -125,6 +125,7 @@ class _GridViewPage extends State<GridViewPage> {
                 cardList!.list!.elementAt(index).longitude!);
             return CardKangru(
                 imageUrl: cardList!.list!.elementAt(index).image!,
+                copyClipboard: cardList!.list!.elementAt(index).name!,
                 businessName:
                     '${index + 1}.${cardList!.list!.elementAt(index).name!}',
                 score: cardList!.list!.elementAt(index).score!,

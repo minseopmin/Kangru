@@ -6,21 +6,26 @@ class CardKangru extends StatelessWidget {
     super.key,
     required this.imageUrl,
     required this.businessName,
+    required this.copyClipboard,
     required this.score,
     required this.distance,
   });
 
   final String imageUrl;
   final String businessName;
+  final String copyClipboard;
   final double score;
   final String distance;
 
-  void copyToClipboard() {
-    Clipboard.setData(ClipboardData(text: businessName));
-  }
-
   @override
   Widget build(BuildContext context) {
+    void copyToClipboard() {
+      Clipboard.setData(ClipboardData(text: copyClipboard)).then((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Store name copied to clipboard")));
+      });
+    }
+
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -46,21 +51,25 @@ class CardKangru extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             Row(
               children: <Widget>[
                 Text(businessName),
                 IconButton(
-                    onPressed: copyToClipboard, icon: const Icon(Icons.copy))
+                  onPressed: copyToClipboard,
+                  icon: const Icon(Icons.copy),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                )
               ],
             ),
-            // Text(
-            //   distance,
-            // ),
-            // Text(
-            //   score.toString(),
-            // )
+            Text(
+              distance,
+            ),
+            Text(
+              score.toString(),
+            )
           ],
         ),
       ),
