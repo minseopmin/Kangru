@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CardKangru extends StatelessWidget {
   const CardKangru({
@@ -13,6 +14,10 @@ class CardKangru extends StatelessWidget {
   final String businessName;
   final double score;
   final String distance;
+
+  void copyToClipboard() {
+    Clipboard.setData(ClipboardData(text: businessName));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +48,19 @@ class CardKangru extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            Text(
-              businessName,
+            Row(
+              children: <Widget>[
+                Text(businessName),
+                IconButton(
+                    onPressed: copyToClipboard, icon: const Icon(Icons.copy))
+              ],
             ),
-            Text(
-              score.toString(),
-            ),
-            Text(
-              distance,
-            )
+            // Text(
+            //   distance,
+            // ),
+            // Text(
+            //   score.toString(),
+            // )
           ],
         ),
       ),
