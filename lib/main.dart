@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kangru/View/loading.dart';
+import 'package:kangru/View/registration_screen.dart';
 import 'package:kangru/View/welcome.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -29,7 +33,8 @@ class Mypage extends StatelessWidget {
       initialRoute: 'welcome',
       routes: {
         'loadingPage': (context) => const LoadingPage(),
-        'welcome': (context) => WelcomeScreen(),
+        'welcome': (context) => const WelcomeScreen(),
+        '/RegistrationScreen': (context) => const RegistrationScreen(),
       },
     );
   }

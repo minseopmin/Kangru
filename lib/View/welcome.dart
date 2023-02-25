@@ -3,6 +3,8 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import '../Component/PadButton.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
+
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
@@ -92,7 +94,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             PadButton(
                 materialButton: MaterialButton(
                   onPressed: () {
-                    null;
+                    Navigator.of(context).pushNamed('/RegistrationScreen');
                   },
                   minWidth: 200.0,
                   height: 42.0,

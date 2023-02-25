@@ -89,8 +89,8 @@ CardList? cardList;
 
 class GridViewPage extends StatefulWidget {
   const GridViewPage({super.key, required this.long, required this.lati});
-  final double? long;
-  final double? lati;
+  final double long;
+  final double lati;
 
   @override
   _GridViewPage createState() => _GridViewPage();
@@ -118,8 +118,8 @@ class _GridViewPage extends State<GridViewPage> {
               crossAxisSpacing: 10), // 수직패딩
           itemBuilder: (BuildContext context, int index) {
             final double meter = Geolocator.distanceBetween(
-                widget.lati!,
-                widget.long!,
+                widget.lati,
+                widget.long,
                 cardList!.list!.elementAt(index).latitude!,
                 cardList!.list!.elementAt(index).longitude!);
             return CardKangru(
