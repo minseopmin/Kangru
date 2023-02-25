@@ -78,7 +78,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             PadButton(
               materialButton: MaterialButton(
                 onPressed: () {
-                  null;
+                  Navigator.of(context).pushNamed('login_page');
                 },
                 minWidth: 200.0,
                 height: 42.0,
@@ -94,7 +94,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             PadButton(
                 materialButton: MaterialButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/RegistrationScreen');
+                    Navigator.of(context).pushNamed('RegistrationScreen');
                   },
                   minWidth: 200.0,
                   height: 42.0,

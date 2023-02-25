@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kangru/View/loading.dart';
+import 'package:kangru/View/login_screen.dart';
 import 'package:kangru/View/registration_screen.dart';
 import 'package:kangru/View/welcome.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,9 +33,10 @@ class Mypage extends StatelessWidget {
       theme: ThemeData(primaryColor: Colors.orange),
       initialRoute: 'welcome',
       routes: {
+        'login_page': (context) => const LoginScreen(),
         'loadingPage': (context) => const LoadingPage(),
         'welcome': (context) => const WelcomeScreen(),
-        '/RegistrationScreen': (context) => const RegistrationScreen(),
+        'RegistrationScreen': (context) => const RegistrationScreen(),
       },
     );
   }
