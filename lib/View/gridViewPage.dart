@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../Component/appbar.dart';
 import '../Component/card.dart';
 import '../Model/cardItem.dart';
-import 'dart:math';
 import 'package:geolocator/geolocator.dart';
 
 final cardItem = {

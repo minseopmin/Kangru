@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kangru/View/loading.dart';
+import 'package:kangru/View/welcome.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +26,11 @@ class Mypage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(primaryColor: Colors.orange),
-      home: const LoadingPage(),
+      initialRoute: 'welcome',
+      routes: {
+        'loadingPage': (context) => const LoadingPage(),
+        'welcome': (context) => WelcomeScreen(),
+      },
     );
   }
 }

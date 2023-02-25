@@ -54,6 +54,7 @@ class CardKangru extends StatelessWidget {
               height: 10,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(businessName),
                 IconButton(
