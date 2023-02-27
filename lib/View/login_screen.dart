@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     hintText: 'Enter your password'),
               ),
               const SizedBox(
-                height: 24.0,
+                height: 10.0,
               ),
               PadButton(
                   materialButton: MaterialButton(
@@ -76,12 +76,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (loginUser != null) {
                           if (!mounted) return;
                           Navigator.of(context).pushNamed('loadingPage');
+                          setState(() {
+                            _spinner = false;
+                          });
                         }
-                        setState(() {
-                          _spinner = false;
-                        });
-                      } catch (e) {
-                        print(e);
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          setState(() {});
+                        } else if (e.code == 'wrong-password') {
+                          setState(() {});
+                        }
                       }
 //Implement login functionality.
                     },

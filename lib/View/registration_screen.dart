@@ -80,10 +80,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         setState(() {
                           _spinner = false;
                         });
-                      } catch (e) {
-                        print(e);
-                      }
-//Implement registration functionality.
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'email-already-in-use') {}
+                      } //Implement registration functionality.
                     },
                     minWidth: 200.0,
                     height: 42.0,
