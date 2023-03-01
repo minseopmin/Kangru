@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AppBarKangru extends StatelessWidget implements PreferredSizeWidget {
   const AppBarKangru({
@@ -38,6 +39,12 @@ class AppBarKangru extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: <Widget>[
+        IconButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, 'welcome');
+            },
+            icon: const Icon(Icons.logout, color: Colors.white)),
         IconButton(
           onPressed: () {
             null;
