@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CardKangru extends StatelessWidget {
   const CardKangru({
     super.key,
     required this.imageUrl,
     required this.businessName,
+    required this.copyClipboard,
     required this.score,
     required this.distance,
   });
 
   final String imageUrl;
   final String businessName;
+  final String copyClipboard;
   final double score;
   final String distance;
 
   @override
   Widget build(BuildContext context) {
+    void copyToClipboard() {
+      Clipboard.setData(ClipboardData(text: copyClipboard)).then((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Store name copied to clipboard")));
+      });
+    }
+
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -41,16 +51,25 @@ class CardKangru extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
-            Text(
-              businessName,
-            ),
-            Text(
-              score.toString(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(businessName),
+                IconButton(
+                  onPressed: copyToClipboard,
+                  icon: const Icon(Icons.copy),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                )
+              ],
             ),
             Text(
               distance,
+            ),
+            Text(
+              score.toString(),
             )
           ],
         ),

@@ -40,7 +40,7 @@ class LoadingPageState extends State<LoadingPage> {
           MaterialPageRoute(
             builder: (context) {
               return GridViewPage(
-                  long: location.longitude, lati: location.latitude);
+                  long: location.longitude ?? 0, lati: location.latitude ?? 0);
             },
           ),
         );
