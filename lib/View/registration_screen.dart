@@ -17,6 +17,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
   late String email;
   late String password;
+  String? _emailErrorText;
   bool _spinner = false;
   @override
   Widget build(BuildContext context) {
@@ -55,6 +56,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     validator: (email) {
                       if (email == null || !EmailValidator.validate(email)) {
                         return 'Enter a valid email';
+                      } else if (_emailErrorText != null) {
+                        final errorText = _emailErrorText;
+                        _emailErrorText = null;
+                        return errorText;
                       } else {
                         return null;
                       }
@@ -73,8 +78,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       hintText: 'Enter your password'),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
-                    if (value == null || value.length < 4) {
-                      return 'Enter min. 4 digit';
+                    if (value == null || value.length < 6) {
+                      return 'Enter min. 6 digit';
                     } else {
                       return null;
                     }
@@ -103,7 +108,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             _spinner = false;
                           });
                         } on FirebaseAuthException catch (e) {
-                          if (e.code == 'email-already-in-use') {}
+                          print(e.code);
+                          if (e.code == 'email-already-in-use') {
+                            setState(() {
+                              _emailErrorText =
+                                  'This email is already registered';
+                            });
+                          }
+                          setState(() {
+                            _spinner = false;
+                          });
                         } //Implement registration functionality.
                       },
                       minWidth: 200.0,

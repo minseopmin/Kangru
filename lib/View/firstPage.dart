@@ -5,7 +5,7 @@ import 'package:kangru/View/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FirstPage extends StatefulWidget {
-  const FirstPage({super.key});
+  const FirstPage({Key? key}) : super(key: key);
 
   @override
   _FirstPage createState() => _FirstPage();
@@ -20,17 +20,21 @@ class _FirstPage extends State<FirstPage> {
     super.initState();
     _initPrefs();
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      setState(() {
-        _isLoggedIn = user != null;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoggedIn = user != null;
+        });
+      }
     });
   }
 
   Future<void> _initPrefs() async {
     _prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isLoggedIn = _prefs.getBool('isLoggedIn') ?? false;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoggedIn = _prefs.getBool('isLoggedIn') ?? false;
+      });
+    }
   }
 
   @override
@@ -52,7 +56,9 @@ class _FirstPage extends State<FirstPage> {
 
   @override
   void dispose() {
-    _prefs.setBool('isLoggedIn', _isLoggedIn);
+    if (mounted) {
+      _prefs.setBool('isLoggedIn', _isLoggedIn);
+    }
     super.dispose();
   }
 }

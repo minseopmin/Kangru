@@ -103,4 +103,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-//hintText: 'Enter your password.'
