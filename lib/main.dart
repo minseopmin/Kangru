@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kangru/View/firstPage.dart';
 import 'package:kangru/View/loading.dart';
 import 'package:kangru/View/login_screen.dart';
 import 'package:kangru/View/registration_screen.dart';
@@ -10,13 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
   await Firebase.initializeApp();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-
-  if (isLoggedIn == false) {
-    await prefs.setBool('isLoggedIn', true);
-  }
 
   runApp(MyApp(isLoggedIn: isLoggedIn));
 }
@@ -32,58 +27,52 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isLoggedIn = false;
+  late SharedPreferences _prefs;
 
   @override
   void initState() {
     super.initState();
+    _initPrefs();
     _isLoggedIn = widget.isLoggedIn;
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       setState(() {
         _isLoggedIn = user != null;
-        if (_isLoggedIn) {
-          // 로그인 상태를 저장합니다.
-          SharedPreferences.getInstance().then((prefs) {
-            prefs.setBool('isLoggedIn', true);
-          });
-        } else {
-          // 로그아웃 상태를 저장합니다.
-          SharedPreferences.getInstance().then((prefs) {
-            prefs.setBool('isLoggedIn', false);
-          });
-        }
+        SharedPreferences.getInstance().then((prefs) {
+          prefs.setBool('isLoggedIn', _isLoggedIn);
+        });
       });
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Kangru',
-        theme: ThemeData(primarySwatch: Colors.orange),
-        home: _isLoggedIn ? const Mypage() : const WelcomeScreen(),
-        routes: {
-          'FirstPage': (context) => const FirstPage(),
-          'login_page': (context) => const LoginScreen(),
-          'loadingPage': (context) => const LoadingPage(),
-          'welcome': (context) => const WelcomeScreen(),
-          'RegistrationScreen': (context) => const RegistrationScreen(),
-        });
+  Future<void> _initPrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+    if (mounted) {
+      setState(() {
+        _isLoggedIn = _prefs.getBool('isLoggedIn') ?? false;
+      });
+    }
   }
-}
-
-class Mypage extends StatelessWidget {
-  const Mypage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primaryColor: Colors.orange),
-      initialRoute: 'FirstPage',
+      title: 'Kangru',
+      theme: ThemeData(primarySwatch: Colors.orange),
+      home: _isLoggedIn ? const LoadingPage() : const WelcomeScreen(),
       routes: {
-        'FirstPage': (context) => const FirstPage(),
-        'loadingPage': (context) => const LoadingPage(),
+        'login_page': (context) => const LoginScreen(),
         'welcome': (context) => const WelcomeScreen(),
+        'RegistrationScreen': (context) => const RegistrationScreen(),
+        'loadingPage': (context) => const LoadingPage(),
       },
     );
+  }
+
+  @override
+  void dispose() {
+    if (mounted) {
+      _prefs.setBool('isLoggedIn', _isLoggedIn);
+    }
+    super.dispose();
   }
 }

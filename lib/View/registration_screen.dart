@@ -106,6 +106,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           }
                           setState(() {
                             _spinner = false;
+                            _emailErrorText = null;
                           });
                         } on FirebaseAuthException catch (e) {
                           print(e.code);
