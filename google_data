@@ -25,7 +25,7 @@ def Google_data(keyword):
     searchbutton = driver.find_element(By.CSS_SELECTOR,"button#searchbox-searchbutton")
     searchbutton.click()
     
-    time.sleep(5
+    time.sleep(5)
     number_of_elements_found = 0
     while True:
         els = driver.find_elements(By.CSS_SELECTOR, '.TFQHme')
