@@ -94,6 +94,9 @@ def Google_data(keyword):
         Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':addr_list,'phone_num':phone_numlist})
 
     return Google_data
+    
+for i in keyword_list:
+    Google_data(i).to_csv(i)
 
 #2.크롤링 후 주소에서 경도 위도 뽑는 함수 그전에 크롤링으로 뽑은 함수에서 주소 후 처리 필요.
 def google_location(keyword) :
@@ -123,7 +126,7 @@ def google_location(keyword) :
     return df
 
 
-for i in keyword_list:
-    Google_data(i).to_csv(i)
+for k in keyword_list:
+    google_location(k).to_csv(k)
     
     
