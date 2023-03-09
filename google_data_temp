@@ -89,7 +89,7 @@ def Google_data(keyword):
         store.click()
         wait = WebDriverWait(driver,10)
         address= wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@class='CsEnBe' and @data-item-id='address']")))
-        address_text=address.txt
+        address_text=address.text
         try:
             phone_num=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-tooltip='전화번호 복사']")[0].text
         except:
@@ -103,20 +103,37 @@ def Google_data(keyword):
 
     return Google_data
 
-print(Google_data("서울 명동 설렁탕"))
+print(Google_data("서울 명동 감자탕"))
 
-this is my code to get store infromation from googlemaps. but it didn't work. here is error message
+this is my code but for some reason it didn't work. it stuck in the middle of list. below is the error message
 
-Input In [25], in <cell line: 106>()
-    102         Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'address':addr_list,'phone_num':phone_numlist})
-    104     return Google_data
---> 106 print(Google_data("서울 명동 설렁탕"))
-
-Input In [25], in Google_data(keyword)
-     90 wait = WebDriverWait(driver,10)
-     91 address= wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@class='CsEnBe' and @data-item-id='address']")))
----> 92 address_text=address[0].txt
-     93 try:
-     94     phone_num=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-tooltip='전화번호 복사']")[0].text
-
-TypeError: 'WebElement' object is not subscriptable
+ElementClickInterceptedException: Message: element click intercepted: Element <div class="Nv2PK THOPZb CpccDe " aria-label="명동한식" role="article" jsaction="mouseover:pane.wfvdle123;mouseout:pane.wfvdle123">...</div> is not clickable at point (201, 866). Other element would receive the click: <span class="tXNTee L6Bbsd T7HQDc ">...</span>
+  (Session info: chrome=110.0.5481.178)
+Stacktrace:
+Backtrace:
+	(No symbol) [0x00E437D3]
+	(No symbol) [0x00DD8B81]
+	(No symbol) [0x00CDB36D]
+	(No symbol) [0x00D14E3B]
+	(No symbol) [0x00D126DB]
+	(No symbol) [0x00D0FD0B]
+	(No symbol) [0x00D0E4D8]
+	(No symbol) [0x00D03253]
+	(No symbol) [0x00D2B41C]
+	(No symbol) [0x00D02B96]
+	(No symbol) [0x00D2B774]
+	(No symbol) [0x00D41215]
+	(No symbol) [0x00D2B216]
+	(No symbol) [0x00D00D97]
+	(No symbol) [0x00D0253D]
+	GetHandleVerifier [0x010BABF2+2510930]
+	GetHandleVerifier [0x010E8EC1+2700065]
+	GetHandleVerifier [0x010EC86C+2714828]
+	GetHandleVerifier [0x00EF3480+645344]
+	(No symbol) [0x00DE0FD2]
+	(No symbol) [0x00DE6C68]
+	(No symbol) [0x00DE6D4B]
+	(No symbol) [0x00DF0D6B]
+	BaseThreadInitThunk [0x74BB0419+25]
+	RtlGetAppContainerNamedObjectPath [0x774A784D+237]
+	RtlGetAppContainerNamedObjectPath [0x774A781D+189]
