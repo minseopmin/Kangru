@@ -108,7 +108,7 @@ def Google_data(keyword):
 
     return Google_data
 
-it still didnt't work error below is the error message
+it still didnt't work, i think the command to click was not executed. below is the error message
 Input In [11], in <cell line: 102>()
      98         Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':addr_list,'phone_num':phone_numlist})
     100     return Google_data
