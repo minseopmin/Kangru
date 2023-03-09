@@ -1,0 +1,109 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+import googlemaps
+from datetime import datetime
+import pandas as pd
+
+keyword_list=['서울 명동 설렁탕','서울 명동 떡볶이','서울 명동 닭갈비']
+
+#1.크롤링 함수
+def Google_data(keyword):
+    #for window
+    #options = Options()
+    #options.add_experimental_option('excludeSwitches', ['--proxy-server'])
+    #service = Service(ChromeDriverManager().install())
+    #driver = webdriver.Chrome(service=service, options=options)
+    
+    s = Service('./chromedriver.exe')
+    driver = webdriver.Chrome(service=s)
+    driver.maximize_window()
+
+    driver.get("https://www.google.com/maps/")
+    title_list=[]
+    score_list=[]
+    comment_list=[]
+    addr_list=[]
+    phone_numlist=[]
+
+    search_word=keyword
+    driver.get("https://www.google.com/maps/")
+    searchbox = driver.find_element(By.CSS_SELECTOR,"input#searchboxinput")
+    searchbox.send_keys(search_word)
+    searchbutton = driver.find_element(By.CSS_SELECTOR,"button#searchbox-searchbutton")
+    searchbutton.click()
+
+    time.sleep(5)
+    number_of_elements_found = 0
+
+    while True:
+        els = driver.find_elements(By.CSS_SELECTOR, '.TFQHme')
+        if number_of_elements_found == len(els):
+            print("데이터 스크롤 완료.")
+            # Reached the end of loadable elements
+            break
+
+        try:
+            driver.execute_script("arguments[0].scrollIntoView();", els[-1])
+            time.sleep(3)
+            number_of_elements_found = len(els)
+            print(number_of_elements_found)
+
+        except StaleElementReferenceException:
+            # Possible to get a StaleElementReferenceException. Ignore it and retry.
+            pass
+    
+    print('데이터 수집 시작 total 갯수 : ' + str(number_of_elements_found))
+    time.sleep(3)
+    stores = driver.find_elements(By.CSS_SELECTOR,"div.CpccDe")
+    if (len(stores)==0) :
+        print('store selector change CpccDe to THOPZb')
+        stores = driver.find_elements(By.CSS_SELECTOR,"div.THOPZb")
+
+    for store in stores:
+        # 가게 이름 데이터 수집 // h3.section-result-title
+        title = store.find_element(By.CSS_SELECTOR,"div.qBF1Pd.fontHeadlineSmall").text
+
+        # 평점 데이터 수집 // span.cards-rating-score
+        # 평점이 없는 경우 에러 처리
+        try:
+            score = store.find_element(By.CSS_SELECTOR,"span.MW4etd").text
+        except:
+            score = "평점없음"
+
+        # 가게 댓글 수 수집 // span.section-result-location
+        try:
+            comment = store.find_element(By.CSS_SELECTOR,"span.UY7F9").text
+        except:
+            comment = "(0)"
+        title_list.append(title)
+        score_list.append(score)
+        comment_list.append(comment)
+
+
+        # 가게 주소 데이터 수집 // span.section-result-location
+        try:
+            #store.click()
+            driver.execute_script("arguments[0].click();",store)
+            time.sleep(5)
+            addr=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-item-id='address']")[0].text
+            try:
+                phone_num=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-tooltip='전화번호 복사']")[0].text
+            except:
+                phone_num="전화번호 없음"
+
+            addr_list.append(addr)
+            phone_numlist.append(phone_num)
+        except:
+            print('click error')
+            addr="error"
+            phone_num="error"
+            addr_list.append(addr)
+            phone_numlist.append(phone_num)
+            pass
+
+
+        Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':addr_list,'phone_num':phone_numlist})
+
+    return Google_data
