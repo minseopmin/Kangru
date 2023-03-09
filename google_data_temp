@@ -246,3 +246,5 @@ Backtrace:
 	BaseThreadInitThunk [0x74BB0419+25]
 	RtlGetAppContainerNamedObjectPath [0x774A784D+237]
 	RtlGetAppContainerNamedObjectPath [0x774A781D+189]
+	
+	ElementClickInterceptedException: Message: element click intercepted: Element <div class="Nv2PK THOPZb CpccDe " aria-label="명동한식" role="article" jsaction="mouseover:pane.wfvdle123;mouseout:pane.wfvdle123">...</div> is not clickable at point (201, 866). Other element would receive the click: <span class="tXNTee L6Bbsd T7HQDc ">...</span>
