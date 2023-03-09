@@ -8,6 +8,7 @@ import pandas as pd
 
 keyword_list=['서울 명동 설렁탕','서울 명동 떡볶이','서울 명동 닭갈비']
 
+#1.크롤링 함수
 def Google_data(keyword):
     options = Options()
     options.add_experimental_option('excludeSwitches', ['--proxy-server'])
@@ -94,6 +95,7 @@ def Google_data(keyword):
 
     return Google_data
 
+#2.크롤링 후 주소에서 경도 위도 뽑는 함수 그전에 크롤링으로 뽑은 함수에서 주소 후 처리 필요.
 def google_location(keyword) :
     df=pd.read_csv(keyword)
     address_list=df['adder'].values.tolist()
