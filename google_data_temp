@@ -83,42 +83,39 @@ def Google_data(keyword):
 
 
         # 가게 주소 데이터 수집 // span.section-result-location
+        store.click()
+        driver.execute_script("arguments[0].click();",store)
+        time.sleep(5)
+        print('click happen')
+        #addr=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-item-id='address']")[0].text
+        print('click didn happen')
         try:
-            #store.click()
-            driver.execute_script("arguments[0].click();",store)
-            time.sleep(5)
-            addr=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-item-id='address']")[0].text
-            try:
-                phone_num=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-tooltip='전화번호 복사']")[0].text
-            except:
-                phone_num="전화번호 없음"
-
-            addr_list.append(addr)
-            phone_numlist.append(phone_num)
+            phone_num=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-tooltip='전화번호 복사']")[0].text
         except:
-            print('click error')
-            addr="error"
-            phone_num="error"
-            addr_list.append(addr)
-            phone_numlist.append(phone_num)
-            pass
+            phone_num="전화번호 없음"
+
+        addr_list.append(addr)
+        phone_numlist.append(phone_num)
 
 
         Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':addr_list,'phone_num':phone_numlist})
 
     return Google_data
 
-it still didnt't work, i think the command to click was not executed. below is the error message
-Input In [11], in <cell line: 102>()
-     98         Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':addr_list,'phone_num':phone_numlist})
-    100     return Google_data
---> 102 print(Google_data("서울 명동 감자탕"))
+print(Google_data("서울 명동 감자탕"))
 
-Input In [11], in Google_data(keyword)
-     86 driver.execute_script("arguments[0].click();",store)
-     87 time.sleep(5)
----> 88 addr=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-item-id='address']")[0].text
-     89 try:
-     90     phone_num=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-tooltip='전화번호 복사']")[0].text
+command to click didn't happen. below is the error message
+UnboundLocalError                         Traceback (most recent call last)
+Input In [14], in <cell line: 106>()
+    102         Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':addr_list,'phone_num':phone_numlist})
+    104     return Google_data
+--> 106 print(Google_data("서울 명동 감자탕"))
 
-IndexError: list index out of range
+Input In [14], in Google_data(keyword)
+     95 except:
+     96     phone_num="전화번호 없음"
+---> 98 addr_list.append(addr)
+     99 phone_numlist.append(phone_num)
+    102 Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':addr_list,'phone_num':phone_numlist})
+
+UnboundLocalError: local variable 'addr' referenced before assignment
