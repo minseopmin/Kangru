@@ -84,38 +84,54 @@ def Google_data(keyword):
 
         # 가게 주소 데이터 수집 // span.section-result-location
         store.click()
-        driver.execute_script("arguments[0].click();",store)
+        #driver.execute_script("arguments[0].click();",store)
         time.sleep(5)
-        print('click happen')
-        #addr=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-item-id='address']")[0].text
-        print('click didn happen')
+        address=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-item-id='address']")[0].text
         try:
             phone_num=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-tooltip='전화번호 복사']")[0].text
         except:
             phone_num="전화번호 없음"
 
-        addr_list.append(addr)
+        addr_list.append(address)
         phone_numlist.append(phone_num)
 
 
-        Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':addr_list,'phone_num':phone_numlist})
+        Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'address':addr_list,'phone_num':phone_numlist})
 
     return Google_data
 
 print(Google_data("서울 명동 감자탕"))
 
-command to click didn't happen. below is the error message
-UnboundLocalError                         Traceback (most recent call last)
-Input In [14], in <cell line: 106>()
-    102         Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':addr_list,'phone_num':phone_numlist})
-    104     return Google_data
---> 106 print(Google_data("서울 명동 감자탕"))
+this is my code for get some information from google map. I think it's because the page didn't go down before the click command came in, so it can't be clicked.. am i right? below is the error message
+can you fix it?
 
-Input In [14], in Google_data(keyword)
-     95 except:
-     96     phone_num="전화번호 없음"
----> 98 addr_list.append(addr)
-     99 phone_numlist.append(phone_num)
-    102 Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':addr_list,'phone_num':phone_numlist})
-
-UnboundLocalError: local variable 'addr' referenced before assignment
+ElementClickInterceptedException: Message: element click intercepted: Element <div class="Nv2PK THOPZb CpccDe " aria-label="소문난명동감자탕" role="article" jsaction="mouseover:pane.wfvdle120;mouseout:pane.wfvdle120">...</div> is not clickable at point (201, 866). Other element would receive the click: <span class="tXNTee L6Bbsd T7HQDc ">...</span>
+  (Session info: chrome=110.0.5481.178)
+Stacktrace:
+Backtrace:
+	(No symbol) [0x00E437D3]
+	(No symbol) [0x00DD8B81]
+	(No symbol) [0x00CDB36D]
+	(No symbol) [0x00D14E3B]
+	(No symbol) [0x00D126DB]
+	(No symbol) [0x00D0FD0B]
+	(No symbol) [0x00D0E4D8]
+	(No symbol) [0x00D03253]
+	(No symbol) [0x00D2B41C]
+	(No symbol) [0x00D02B96]
+	(No symbol) [0x00D2B774]
+	(No symbol) [0x00D41215]
+	(No symbol) [0x00D2B216]
+	(No symbol) [0x00D00D97]
+	(No symbol) [0x00D0253D]
+	GetHandleVerifier [0x010BABF2+2510930]
+	GetHandleVerifier [0x010E8EC1+2700065]
+	GetHandleVerifier [0x010EC86C+2714828]
+	GetHandleVerifier [0x00EF3480+645344]
+	(No symbol) [0x00DE0FD2]
+	(No symbol) [0x00DE6C68]
+	(No symbol) [0x00DE6D4B]
+	(No symbol) [0x00DF0D6B]
+	BaseThreadInitThunk [0x74BB0419+25]
+	RtlGetAppContainerNamedObjectPath [0x774A784D+237]
+	RtlGetAppContainerNamedObjectPath [0x774A781D+189]
