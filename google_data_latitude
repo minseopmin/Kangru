@@ -5,10 +5,18 @@ from webdriver_manager.chrome import ChromeDriverManager
 import googlemaps
 from datetime import datetime
 import pandas as pd
+from selenium.webdriver.common.by import By
+import time
+from time import sleep
+from datetime import datetime
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 
-keyword_list=['서울 명동 설렁탕','서울 명동 떡볶이','서울 명동 닭갈비']
+keyword_list=['서울 명동 불고기','서울 명동 삼겹살','서울 명동 삼계탕','서울 명동 감자탕','서울 명동 불고기']
 
-#1.크롤링 함수
 def Google_data(keyword):
     options = Options()
     options.add_experimental_option('excludeSwitches', ['--proxy-server'])
@@ -77,28 +85,39 @@ def Google_data(keyword):
         title_list.append(title)
         score_list.append(score)
         comment_list.append(comment)
+        if store.is_displayed():
+            # 가게 주소 데이터 수집 // span.section-result-location
+            driver.execute_script("arguments[0].scrollIntoView();", store)
+            time.sleep(3)
+            try:
+                wait = WebDriverWait(driver,10)
+                wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.CpccDe")))
+                store.click()
+            except ElementClickInterceptedException:
+                continue
+            try :
+                address = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@class='CsEnBe' and @data-item-id='address']")))
+                wait.until(EC.invisibility_of_element_located((By.XPATH, "//button[@class='CsEnBe' and @data-item-id='address']")))
+                address_text = address.text
+            except:
+                address_text='주소 없음'
+            try:
+                phone_num=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-tooltip='전화번호 복사']")[0].text
+            except:
+                phone_num="전화번호 없음"
+        else:
+            address_text='error'
+            phone_num='error'
+            pass
+            
 
-
-        # 가게 주소 데이터 수집 // span.section-result-location
-        store.click()
-        time.sleep(5)
-        addr=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-item-id='address']")[0].text
-        try:
-            phone_num=driver.find_elements(By.XPATH, "//button[@class='CsEnBe' and @data-tooltip='전화번호 복사']")[0].text
-        except:
-            phone_num="전화번호 없음"
-
-        addr_list.append(addr)
+        addr_list.append(address_text)
         phone_numlist.append(phone_num)
-
+        
         Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':addr_list,'phone_num':phone_numlist})
 
     return Google_data
-    
-for i in keyword_list:
-    Google_data(i).to_csv(i)
 
-#2.크롤링 후 주소에서 경도 위도 뽑는 함수 그전에 크롤링으로 뽑은 함수에서 주소 후 처리 필요.
 def google_location(keyword) :
     df=pd.read_csv(keyword)
     address_list=df['adder'].values.tolist()
@@ -126,7 +145,7 @@ def google_location(keyword) :
     return df
 
 
-for k in keyword_list:
-    google_location(k).to_csv(k)
+for i in keyword_list:
+    Google_data(i).to_csv(i+'.csv')
     
     
