@@ -1,0 +1,148 @@
+import time
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+import pandas as pd
+
+    # Replace these variables with your desired food and area
+    
+def Google_data(food,area):
+    nametemp="이름 없음"
+    title_list=[]
+    score_list=[]
+    comment_list=[]
+    address_list=[]
+    phone_numlist=[]
+    # Configure your webdriver (replace with the path to your chromedriver)
+    options = Options()
+    options.add_experimental_option('excludeSwitches', ['--proxy-server'])
+
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
+    driver.maximize_window()
+
+    # Open Google Maps
+    driver.get("https://www.google.com/maps")
+
+    # Search for specific food in a specific area
+    search_box = driver.find_element(By.XPATH, "//input[@id='searchboxinput']")
+    search_box.send_keys(f"{area}의 {food}")
+    search_box.send_keys(Keys.RETURN)
+    number_of_elements_found = 0
+
+    wait = WebDriverWait(driver, 10)
+    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".TFQHme")))
+
+    # Scroll down the store name list
+    scrollable_list = driver.find_element(By.CSS_SELECTOR, ".TFQHme")
+    number_of_elements_found = 0
+
+    while True:
+        els = driver.find_elements(By.CSS_SELECTOR, '.TFQHme')
+        if number_of_elements_found == len(els):
+            print("데이터 스크롤 완료.")
+            # Reached the end of loadable elements
+            break
+
+        try:
+            driver.execute_script("arguments[0].scrollIntoView();", els[-1])
+            time.sleep(2)
+            number_of_elements_found = len(els)
+            print(number_of_elements_found)
+
+        except StaleElementReferenceException:
+            # Possible to get a StaleElementReferenceException. Ignore it and retry.
+            pass
+        els = driver.find_elements(By.CSS_SELECTOR, '.TFQHme')
+
+    # Wait for search results to load
+    selector="div.CpccDe"
+    wait = WebDriverWait(driver, 10)
+    try:
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,selector)))
+        # Get the list of restaurant elements
+        restaurants = driver.find_elements(By.CSS_SELECTOR,selector)
+    except:
+        selector="div.THOPZb"
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,selector)))
+        restaurants = driver.find_elements(By.CSS_SELECTOR,selector)
+
+    for restaurant in restaurants:
+        driver.execute_script("arguments[0].scrollIntoView();", restaurant)
+        time.sleep(1)
+        restaurant.click()
+        time.sleep(5)
+        wait = WebDriverWait(driver, 10)
+        soup = BeautifulSoup(driver.page_source, "html.parser")
+        # Extract rating
+        try:
+            rating = restaurant.find_element(By.CSS_SELECTOR,"span.MW4etd").text
+            score_list.append(rating)
+        except:
+            rating = "평점없음"
+            score_list.append(rating)
+        # Extract number of reviews
+        try:
+            num_reviews = restaurant.find_element(By.CSS_SELECTOR,"span.UY7F9").text
+            print(num_reviews)
+            comment_list.append(num_reviews)
+        except:
+            num_reviews = "(0)"
+            comment_list.append(num_reviews)
+            
+        name_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//h1[contains(@class, 'DUwDvf') and contains(@class, 'fontHeadlineLarge')]")))
+        name = name_element.text.strip()
+        if(nametemp==name):
+            print('error occur')
+            close_btn = driver.find_element(By.CSS_SELECTOR, "div.gYkzb")
+            close_btn.click()
+            time.sleep(5)
+            restaurant.click()
+            time.sleep(5)
+            name_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//h1[contains(@class, 'DUwDvf') and contains(@class, 'fontHeadlineLarge')]")))
+            name = name_element.text.strip()
+        else:
+            pass
+        nametemp=name
+        print(name)
+        title_list.append(name)
+        # Extract address
+        try:
+            address_element = driver.find_element(By.XPATH, "//button[@data-item-id='address']")
+            address = address_element.text.strip()
+            #address = soup.find("button", {"data-item-id": "address"}).get_text(strip=True)
+            print(address)
+            address_list.append(address)
+        except:
+            address="주소 없음"
+            address_list.append(address)
+            print(address)
+        # Extract phone number
+        try:
+            phone_element = driver.find_element(By.XPATH, "//button[@data-tooltip='전화번호 복사']")
+            phone = phone_element.text.strip()
+            #phone = soup.find("button", {"data-tooltip": "전화번호 복사"}).get_text(strip=True)
+            phone_numlist.append(phone)
+            print(phone)
+        except:
+            phone="번호 없음"
+            phone_numlist.append(phone)
+            print(phone)
+
+    Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':address_list,'phone_num':phone_numlist})
+
+    # Close the driver
+    driver.quit()
+
+loc_list=['용인 기흥']
+food_list=['불고기','떡볶이']
+
+for loc in loc_list:
+    for food in food_list:
+        Google_data(food,loc).to_csv(loc+food+'.csv')
