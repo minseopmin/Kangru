@@ -1,3 +1,4 @@
+
 import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -19,12 +20,15 @@ def Google_data(food,area):
     comment_list=[]
     address_list=[]
     phone_numlist=[]
+    titlechecklist=[]
     # Configure your webdriver (replace with the path to your chromedriver)
     options = Options()
     options.add_experimental_option('excludeSwitches', ['--proxy-server'])
-
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    driver=webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=options)
+    #service = Service(ChromeDriverManager().install())
+    #driver = webdriver.Chrome(service=service, options=options)
     driver.maximize_window()
 
     # Open Google Maps
@@ -74,11 +78,11 @@ def Google_data(food,area):
         restaurants = driver.find_elements(By.CSS_SELECTOR,selector)
 
     for restaurant in restaurants:
+        error_occurred = True
         driver.execute_script("arguments[0].scrollIntoView();", restaurant)
         time.sleep(1)
         restaurant.click()
         time.sleep(5)
-        wait = WebDriverWait(driver, 10)
         soup = BeautifulSoup(driver.page_source, "html.parser")
         # Extract rating
         try:
@@ -96,22 +100,28 @@ def Google_data(food,area):
             num_reviews = "(0)"
             comment_list.append(num_reviews)
             
-        name_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//h1[contains(@class, 'DUwDvf') and contains(@class, 'fontHeadlineLarge')]")))
-        name = name_element.text.strip()
-        if(nametemp==name):
-            print('error occur')
-            close_btn = driver.find_element(By.CSS_SELECTOR, "div.gYkzb")
-            close_btn.click()
-            time.sleep(5)
-            restaurant.click()
-            time.sleep(5)
-            name_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//h1[contains(@class, 'DUwDvf') and contains(@class, 'fontHeadlineLarge')]")))
-            name = name_element.text.strip()
-        else:
-            pass
-        nametemp=name
-        print(name)
-        title_list.append(name)
+        titlecheck = restaurant.find_element(By.CSS_SELECTOR,"div.qBF1Pd.fontHeadlineSmall").text
+        titlechecklist.append(titlecheck)
+        while error_occurred:
+            try:
+                name_element = wait.until(EC.element_to_be_clickable((By.XPATH, "//h1[contains(@class, 'DUwDvf') and contains(@class, 'fontHeadlineLarge')]")))
+                name = name_element.text.strip()
+                if(name==titlecheck):
+                    title_list.append(name)
+                    print(name)
+                    error_occurred = False
+                else:
+                    print('error occur')
+                    close_btn = driver.find_element(By.CSS_SELECTOR, "div.gYkzb")
+                    close_btn.click()
+                    time.sleep(5)
+                    wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR,selector)))
+                    restaurant.click()
+                    time.sleep(5)                   
+            except Exception as e:
+                print(f"An exception occurred: {e}")
+                error_occurred = True
+            
         # Extract address
         try:
             address_element = driver.find_element(By.XPATH, "//button[@data-item-id='address']")
@@ -135,12 +145,13 @@ def Google_data(food,area):
             phone_numlist.append(phone)
             print(phone)
 
-    Google_data = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':address_list,'phone_num':phone_numlist})
+    df = pd.DataFrame({'Store':title_list,'score':score_list,'comment':comment_list,'adder':address_list,'phone_num':phone_numlist})
 
     # Close the driver
     driver.quit()
+    return df
 
-loc_list=['용인 기흥']
+loc_list=['서울 명동']
 food_list=['불고기','떡볶이']
 
 for loc in loc_list:
